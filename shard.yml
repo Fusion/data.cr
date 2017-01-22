@@ -1,0 +1,13 @@
+name: datacr
+version: 0.1.0
+
+authors:
+  - Chris F Ravenscroft <chris@voilaweb.com>
+
+targets:
+  rrb:
+    main: src/crdata.cr
+
+crystal: 0.20.3
+
+license: MIT
