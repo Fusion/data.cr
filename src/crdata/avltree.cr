@@ -1,4 +1,6 @@
 class AVLTree(T)
+  include Enumerable(T)
+  include Iterable(T)
   #
   # # An AVL Tree will tolerate a balance factor no greater than 1
   # # Balance Factor = abs((leftmost - root) - (rightmost - root))
@@ -12,6 +14,11 @@ class AVLTree(T)
   delegate dump, to: @tree
   delegate dump_in_order, to: @tree
   delegate to_s, to: @tree
+
+  # When capturing blocks are involved, the delegate macro cannot work...
+  def each
+    @tree.each { |x| yield x }
+  end
 
   def initialize
     @tree = Tree(T).new

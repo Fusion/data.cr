@@ -18,15 +18,17 @@ class Tree(T)
     new_nodes = [] of Node(T) | Nil
     nodes.each do |node|
       if node != nil
+        node_offset = node.not_nil!.data.to_s.size - 1
         print node.not_nil!.data
         new_nodes << node.not_nil!.left
         new_nodes << node.not_nil!.right
       else
+        node_offset = 0
         new_nodes << nil
         new_nodes << nil
         print " "
       end
-      print " " * between_spaces
+      print " " * (between_spaces - node_offset)
     end
     puts
     (1..edge_lines).each do |i|

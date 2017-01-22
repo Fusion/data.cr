@@ -1,4 +1,7 @@
 class Tree(T)
+  include Enumerable(T)
+  include Iterable(T)
+
   class Node(N)
     property data, height, left, right
 
@@ -67,6 +70,25 @@ class Tree(T)
 
   def dump_in_order
     dump_in_order_ @root_node
+  end
+
+  # Yield cannot recurse! Damn...need to unroll the whole business
+  # Not too happy here as this means no streaming...
+  def each
+    # Let's maintain a stack of traversed node...
+    ll = LinkedList(Node(T)).new
+    cur_node = @root_node
+    loop do
+      if cur_node == nil # Found leftmost node -- go back up
+        break if ll.empty?
+        cur_node = ll.pop
+        yield cur_node.not_nil!.data
+        cur_node = cur_node.not_nil!.right
+      else # Keep digging
+        ll.add cur_node
+        cur_node = cur_node.not_nil!.left
+      end
+    end
   end
 
   def initialize

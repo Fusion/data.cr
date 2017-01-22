@@ -1,5 +1,6 @@
 class LinkedList(V)
-  include Enumerable(V | Nil)
+  include Enumerable(V)
+  include Iterable(V)
 
   class Node(T)
     property n, p, v
@@ -8,18 +9,18 @@ class LinkedList(V)
     @v : T | Nil
 
     def to_s(io)
-      io << "{@v}"
+      io << "#{@v}"
     end
 
     def initialize
-        @n = nil
-        @p = nil
-        @v = nil
+      @n = nil
+      @p = nil
+      @v = nil
     end
 
     def initialize(@v)
-        @n = nil
-        @p = nil
+      @n = nil
+      @p = nil
     end
   end
 
@@ -45,16 +46,26 @@ class LinkedList(V)
     @tail = @head
   end
 
+  def empty?
+    @head == @tail
+  end
+
   def add(item : V | Nil)
     @tail.v = item
     node = Node(V).new
-    node.p  = @tail
+    node.p = @tail
     @tail.n = node
-    @tail   = node
+    @tail = node
   end
 
   def <<(item : V)
     add item
+  end
+
+  def pop
+    raise "Empty list!" if @head == @tail
+    @tail = @tail.p.not_nil!
+    @tail.v
   end
 
   def get(idx) : V | Nil
@@ -65,9 +76,9 @@ class LinkedList(V)
   def get_forward(idx) : V | Nil
     return @head.v if idx == 0
     node = @head
-    idx.times do 
-        raise "OutOfBounds" if node.not_nil!.n == nil
-        node = node.not_nil!.n
+    idx.times do
+      raise "OutOfBounds" if node.not_nil!.n == nil
+      node = node.not_nil!.n
     end
     raise "OutOfBounds" if node.not_nil!.v == nil
     node.not_nil!.v
@@ -76,8 +87,8 @@ class LinkedList(V)
   def get_backward(idx) : V | Nil
     node = @tail
     idx.times do
-        raise "OutOfBounds" if node.not_nil!.p == nil
-        node = node.not_nil!.p
+      raise "OutOfBounds" if node.not_nil!.p == nil
+      node = node.not_nil!.p
     end
     node.not_nil!.v
   end
