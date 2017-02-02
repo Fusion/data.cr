@@ -20,7 +20,10 @@ module CRData
       m2 = m1.set("test2", "v:2")
       puts "DUMP: [#{m2.dump}]"
       m = m2.set("test0", "v:0")
-      puts "DUMP: [#{m.dump}]"
+      puts "DUMP m : [#{m.dump}]"
+      m.display
+      puts "DUMP m2: [#{m2.dump}]"
+      m2.display
       (3..9).each { |x| m = m.set("test#{x}", "v:#{x}"); puts "DUMP: [#{m.dump}]" }
 
       puts "#DUMP:"
@@ -39,6 +42,14 @@ module CRData
       mw.display
       mx = mw.set("test6", "ok6")
       mx.display
+      puts "While original remains:"
+      m.display
+      my = mx.unset("test5")
+      my = my.unset("test1")
+      my = my.unset("test9")
+      my = my.set("test5", "5!")
+      puts "After removing test5, test1, test9, then adding test5 again:"
+      my.display
       puts "While original remains:"
       m.display
     end

@@ -14,7 +14,7 @@ class Map(K, V)
     end
 
     def initialize(@key : K)
-      @value = ""
+      @value = nil
     end
 
     def <=>(other : KVP(K, V))
@@ -38,14 +38,18 @@ class Map(K, V)
   end
 
   def set(key, value)
-    # TODO Need find out if copy_path returns upon finding an existing key or not
-    # If found, then we do not insert but replace...only value should change
-    # Yes, this currently kinda works but seriously the insert() should not be here
-    # It is too expensive
     node = KVP(K, V).new(key, value)
     new_root_node, existing_node = @tree.copy_path(node)
     new_tree = AVLTree(KVP(K, V)).new(new_root_node)
     new_tree.insert(node)
+    Map(K, V).new(new_tree)
+  end
+
+  def unset(key)
+    node = KVP(K, V).new(key)
+    new_root_node, existing_node = @tree.copy_path(node)
+    new_tree = AVLTree(KVP(K, V)).new(new_root_node)
+    new_tree.delete(node)
     Map(K, V).new(new_tree)
   end
 end
