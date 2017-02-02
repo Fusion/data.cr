@@ -7,6 +7,9 @@ Data Structures for Crystal Lang. A very modest start.
 01/21/17
 - First check-in: AVL tree
 
+02/01/17
+- Second check-in: a modest, not thoroughly tested immutable map
+
 ## Installation
 
 Add these package to your dependencies in shard.yml:
