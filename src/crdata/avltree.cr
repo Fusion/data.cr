@@ -24,6 +24,28 @@ class AVLTree(T)
     @tree = Tree(T).new
   end
 
+  # This is _very_ easy to perform with an AVL Tree
+  # The data structure being passed needs to be sorted and random access though
+  def initialize(source_array)
+    @tree = Tree(T).new
+    @tree.root_node = seed_(source_array, 0, source_array.size - 1)
+  end
+
+  # Create a tree with pre populated nodes
+  def initialize(root_node)
+    @tree = Tree(T).new
+    @tree.root_node = root_node
+  end
+
+  def seed_(source_array, first, last)
+    return nil if first > last
+    pivot = ((last + first) / 2).to_i32
+    cur_node = Tree::Node(T).new(source_array[pivot])
+    cur_node.left = seed_(source_array, first, pivot - 1)
+    cur_node.right = seed_(source_array, pivot + 1, last)
+    cur_node
+  end
+
   # Tree
   # Balanced Search Tree: compare
   def insert(data : T)
@@ -42,7 +64,8 @@ class AVLTree(T)
     when 1
       cur_node!.right = insert_(new_node, cur_node!.right)
     else
-      return cur_node! # same... return unmolested
+      # same... return unmolested if dumb or updated otherwise
+      return Tree::Node(T).new(new_node, cur_node!)
     end
 
     hl = height_(cur_node!.left)
@@ -163,6 +186,29 @@ class AVLTree(T)
   def height_(node)
     return 0 if node == nil
     node.not_nil!.height
+  end
+
+  def copy_path(data : T)
+    node = @tree.root_node
+    copy_root_node = Tree::Node(T).new(node.not_nil!) if node != nil
+    cur_node = copy_root_node
+    loop do
+      return [copy_root_node, nil] if node == nil
+
+      case data <=> node.not_nil!.data
+      when 1
+        cur_node.not_nil!.right = Tree::Node(T).new(node.not_nil!.right.not_nil!) if node.not_nil!.right != nil
+        node = node.not_nil!.right
+        cur_node = cur_node.not_nil!.right
+      when -1
+        cur_node.not_nil!.left = Tree::Node(T).new(node.not_nil!.left.not_nil!) if node.not_nil!.left != nil
+        node = node.not_nil!.left
+        cur_node = cur_node.not_nil!.left
+      else
+        puts "Found/Returning: #{copy_root_node}"
+        return [copy_root_node, node]
+      end
+    end
   end
 
   # Tree

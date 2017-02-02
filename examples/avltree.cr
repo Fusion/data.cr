@@ -103,6 +103,24 @@ module CRData
       puts "> #{t.dump_in_order}"
     end
 
+    def self.test_avltree_seed_from_data
+      t = AVLTree(String).new
+      ["a", "b", "c", "d", "e", "f", "g", "h"].each { |item| t.insert item }
+      puts
+      puts "After inserting a flat array: individual inserts"
+      t.display
+
+      t = AVLTree(String).new ["a", "b", "c", "d", "e", "f", "g", "h"]
+      puts
+      puts "After inserting a flat array: bulk constructor"
+      t.display
+
+      puts
+      puts "Moving that back into an ordered double linked list"
+      ll = LinkedList(String).new t
+      puts ll
+    end
+
     def self.test5
     end
 
@@ -113,4 +131,5 @@ module CRData
   ###
   Util.test_avltree_with_primitive_types
   Util.test_avltree_with_objects
+  Util.test_avltree_seed_from_data
 end

@@ -18,7 +18,7 @@ class Tree(T)
     new_nodes = [] of Node(T) | Nil
     nodes.each do |node|
       if node != nil
-        node_offset = node.not_nil!.data.to_s.size - 1
+        node_offset = Math.min(node.not_nil!.data.to_s.size, between_spaces) - 1
         print node.not_nil!.data
         new_nodes << node.not_nil!.left
         new_nodes << node.not_nil!.right

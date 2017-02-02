@@ -3,15 +3,22 @@ class Tree(T)
   include Iterable(T)
 
   class Node(N)
-    property data, height, left, right
+    property data, height, color, left, right, children
+
+    enum Color
+      BLACK
+      RED
+    end
 
     @data : N
     @left : Node(N) | Nil
     @right : Node(N) | Nil
+    @children : Array(Node(N)) | Nil
     @height : UInt32
+    @color : Color
 
     def to_s(io)
-      io << " [#{@data} (height: #{@height}"
+      io << " [#{@data} (height: #{@height})"
       if @left != nil
         io << " / left: #{@left.not_nil!.data}"
       end
@@ -34,13 +41,27 @@ class Tree(T)
     def initialize(@data : N)
       @left = nil
       @right = nil
+      @children = nil
+      @color = Color::BLACK
       @height = 1_u32
+    end
+
+    def initialize(cloned : Node(N))
+      # TODO clone data
+      @data = cloned.data
+      @left = cloned.left
+      @right = cloned.right
+      @children = cloned.children
+      @color = cloned.color
+      @height = cloned.height
     end
 
     def initialize(transplant : Node(N), template : Node(N))
       @data = transplant.data
       @left = template.left
       @right = template.right
+      @children = template.children
+      @color = template.color
       @height = template.height
     end
   end
@@ -75,7 +96,7 @@ class Tree(T)
   # Yield cannot recurse! Damn...need to unroll the whole business
   # Not too happy here as this means no streaming...
   def each
-    # Let's maintain a stack of traversed node...
+    # Let's maintain a stack of traversed nodes...
     ll = LinkedList(Node(T)).new
     cur_node = @root_node
     loop do

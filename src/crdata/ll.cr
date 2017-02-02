@@ -46,6 +46,11 @@ class LinkedList(V)
     @tail = @head
   end
 
+  def initialize(iterable)
+    initialize
+    iterable.each { |x| add(x) }
+  end
+
   def empty?
     @head == @tail
   end
