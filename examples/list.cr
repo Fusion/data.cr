@@ -22,6 +22,7 @@ module CRData
         puts "Head: #{it.head}"
         it = it.tail
       end
+      puts l3.to_a
     end
   end
 

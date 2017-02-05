@@ -9,6 +9,7 @@ module CRData
       l << "c"
       l << "d"
       puts l
+      puts l.to_a
     end
   end
 

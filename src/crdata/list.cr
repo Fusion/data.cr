@@ -1,4 +1,7 @@
 class List(T)
+  include Enumerable(T)
+  include Iterable(T)
+
   getter ll
   @ll : LinkedList(T)
 
@@ -20,6 +23,10 @@ class List(T)
 
   def initialize(item : T, other : List(T))
     @ll = LinkedList(T).new item, other.ll
+  end
+
+  def each
+    @ll.each { |x| yield x }
   end
 
   def empty?

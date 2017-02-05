@@ -73,6 +73,14 @@ class LinkedList(V)
     @list_tail = other.list_tail
   end
 
+  def each
+    node = @list_head
+    while node != nil && node.not_nil!.v != nil
+      yield node.not_nil!.v.not_nil!
+      node = node.not_nil!.n
+    end
+  end
+
   def empty?
     @list_head == @list_tail
   end
