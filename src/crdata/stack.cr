@@ -6,7 +6,7 @@ class Stack(T)
   @ll : LinkedList(T)
 
   def to_s(io)
-    @ll.to_s_reverse io
+    @ll.to_s io
   end
 
   def initialize
@@ -14,7 +14,7 @@ class Stack(T)
   end
 
   def initialize(items : Array(T))
-    @ll = LinkedList(T).new items
+    @ll = LinkedList(T).new items, reverse: true
   end
 
   def initialize(other_ll : LinkedList(T))
@@ -22,11 +22,11 @@ class Stack(T)
   end
 
   def initialize(other : Stack(T), item : T)
-    @ll = LinkedList(T).new other.ll, item
+    @ll = LinkedList(T).new item, other.ll
   end
 
   def each
-    @ll.each_reverse { |x| yield x }
+    @ll.each { |x| yield x }
   end
 
   def empty?
@@ -34,18 +34,15 @@ class Stack(T)
   end
 
   def pop? : {T?, Stack(T)}
-    v, new_ll = @ll.pop?
-    {v, Stack(T).new(new_ll.not_nil!)}
+    {ll.head?, Stack(T).new @ll.tail?}
   end
 
   def pop : {T?, Stack(T)}
-    v, new_ll = @ll.pop
-    {v, Stack(T).new(new_ll.not_nil!)}
+    {@ll.head, Stack(T).new @ll.tail}
   end
 
   def push(item : T)
     Stack(T).new(self, item)
-    # @ll << element
   end
 
   def <<(item : T)

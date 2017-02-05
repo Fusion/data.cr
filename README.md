@@ -27,7 +27,7 @@ Also `crystal spec`
 
 ## To do
 
-* List (done), Queue, Stack, Vector
+* List (done), Queue, Stack (done), Vector
 * Proper iterators
 
 ## Contributing

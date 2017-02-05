@@ -67,8 +67,16 @@ class LinkedList(V)
   end
 
   def initialize(iterable)
+    initialize iterable, false
+  end
+
+  def initialize(iterable, reverse = false)
     initialize
-    iterable.each { |x| add(x) }
+    if reverse
+      iterable.each { |x| insert(x) }
+    else
+      iterable.each { |x| add(x) }
+    end
   end
 
   def initialize(other : LinkedList(V))
@@ -81,18 +89,6 @@ class LinkedList(V)
     node.n = other.list_head
     @list_head = node
     @list_tail = other.list_tail
-  end
-
-  # Beware! We have a corner case here when pushing after popping will clobber
-  # a previous value if we already pushed exactly here.
-  # To work around this iI would need to write a different type of linked list,
-  # where value would be assigned to new node rather than existing node.
-  def initialize(other : LinkedList(V), item : V)
-    node = Node(V).new
-    node.p = other.list_tail
-    node.p.not_nil!.v = item
-    @list_tail = node
-    @list_head = other.list_head
   end
 
   def each
@@ -126,6 +122,13 @@ class LinkedList(V)
 
   def <<(item : V)
     add item
+  end
+
+  def insert(item : V?)
+    node = Node(V).new item
+    node.n = @list_head
+    @list_head.p = node
+    @list_head = node
   end
 
   def pop? : {V?, LinkedList(V)}
