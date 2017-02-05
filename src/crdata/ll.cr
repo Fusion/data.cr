@@ -51,6 +51,16 @@ class LinkedList(V)
     io << "\n"
   end
 
+  def to_s_reverse(io)
+    node = @list_tail
+    loop do
+      node = node.not_nil!.p
+      break if node == nil
+      io << " >> #{node.not_nil!.v}"
+    end
+    io << "\n"
+  end
+
   def initialize
     @list_head = Node(V).new
     @list_tail = @list_head
@@ -73,11 +83,32 @@ class LinkedList(V)
     @list_tail = other.list_tail
   end
 
+  # Beware! We have a corner case here when pushing after popping will clobber
+  # a previous value if we already pushed exactly here.
+  # To work around this iI would need to write a different type of linked list,
+  # where value would be assigned to new node rather than existing node.
+  def initialize(other : LinkedList(V), item : V)
+    node = Node(V).new
+    node.p = other.list_tail
+    node.p.not_nil!.v = item
+    @list_tail = node
+    @list_head = other.list_head
+  end
+
   def each
     node = @list_head
     while node != nil && node.not_nil!.v != nil
       yield node.not_nil!.v.not_nil!
       node = node.not_nil!.n
+    end
+  end
+
+  def each_reverse
+    node = @list_tail
+    while node.not_nil!.p != nil
+      node = node.not_nil!.p
+      break if node.not_nil!.v == nil
+      yield node.not_nil!.v.not_nil!
     end
   end
 
@@ -97,10 +128,16 @@ class LinkedList(V)
     add item
   end
 
-  def pop
+  def pop? : {V?, LinkedList(V)}
+    new_ll = LinkedList.new self
+    return {nil, new_ll.not_nil!} if empty?
+    new_ll.list_tail = @list_tail.not_nil!.p.not_nil!
+    {new_ll.list_tail.not_nil!.v, new_ll.not_nil!}
+  end
+
+  def pop : {V?, LinkedList(V)}
     raise "Empty list!" if empty?
-    @list_tail = @list_tail.p.not_nil!
-    @list_tail.v
+    pop?
   end
 
   def get(idx) : V?
