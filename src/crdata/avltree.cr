@@ -26,13 +26,13 @@ class AVLTree(T)
 
   # This is _very_ easy to perform with an AVL Tree
   # The data structure being passed needs to be sorted and random access though
-  def initialize(source_array)
+  def initialize(source_array : Array(T))
     @tree = Tree(T).new
     @tree.root_node = seed_(source_array, 0, source_array.size - 1)
   end
 
   # Create a tree with pre populated nodes
-  def initialize(root_node)
+  def initialize(root_node : T)
     @tree = Tree(T).new
     @tree.root_node = root_node
   end
@@ -52,7 +52,7 @@ class AVLTree(T)
     @tree.root_node = insert_(Tree::Node(T).new(data), @tree.root_node)
   end
 
-  def insert_(new_node : Tree::Node(T), cur_node : Tree::Node(T) | Nil)
+  def insert_(new_node : Tree::Node(T), cur_node : Tree::Node(T)?)
     if cur_node == nil
       return new_node
     end
@@ -99,7 +99,7 @@ class AVLTree(T)
     @tree.root_node = delete_(Tree::Node(T).new(data), @tree.root_node)
   end
 
-  def delete_(del_node : Tree::Node(T), cur_node : Tree::Node(T) | Nil)
+  def delete_(del_node : Tree::Node(T), cur_node : Tree::Node(T)?)
     if cur_node == nil
       return cur_node
     end

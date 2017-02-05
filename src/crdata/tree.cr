@@ -11,9 +11,9 @@ class Tree(T)
     end
 
     @data : N
-    @left : Node(N) | Nil
-    @right : Node(N) | Nil
-    @children : Array(Node(N)) | Nil
+    @left : Node(N)?
+    @right : Node(N)?
+    @children : Array(Node(N))?
     @height : UInt32
     @color : Color
 
@@ -67,7 +67,7 @@ class Tree(T)
   end
 
   property root_node
-  @root_node : Node(T) | Nil
+  @root_node : Node(T)?
 
   def to_s(io)
     io.<< @root_node

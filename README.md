@@ -25,6 +25,10 @@ Include, use. See examples/avltree.cr
 
 Also `crystal spec`
 
+## To do
+
+List (done), Queue, Stack, Vector
+
 ## Contributing
 
 1. Fork it ( https://github.com/fusion/data.cr/fork )
