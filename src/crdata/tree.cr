@@ -102,7 +102,7 @@ class Tree(T)
     loop do
       if cur_node == nil # Found leftmost node -- go back up
         break if ll.empty?
-        cur_node = ll.pop
+        cur_node = ll.in_place_pop
         yield cur_node.not_nil!.data
         cur_node = cur_node.not_nil!.right
       else # Keep digging

@@ -131,6 +131,12 @@ class LinkedList(V)
     @list_head = node
   end
 
+  def in_place_pop : V?
+    raise "Empty list!" if empty?
+    @list_tail = @list_tail.p.not_nil!
+    @list_tail.v
+  end
+
   def pop? : {V?, LinkedList(V)}
     new_ll = LinkedList.new self
     return {nil, new_ll.not_nil!} if empty?
