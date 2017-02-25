@@ -37,7 +37,7 @@ class Map(K, V)
     @tree.display
   end
 
-  def set(key, value)
+  def set(key : K, value : V)
     node = KVP(K, V).new(key, value)
     new_root_node, existing_node = @tree.copy_path(node)
     new_tree = AVLTree(KVP(K, V)).new(new_root_node)
@@ -45,7 +45,7 @@ class Map(K, V)
     Map(K, V).new(new_tree)
   end
 
-  def unset(key)
+  def unset(key : K)
     node = KVP(K, V).new(key)
     new_root_node, existing_node = @tree.copy_path(node)
     new_tree = AVLTree(KVP(K, V)).new(new_root_node)

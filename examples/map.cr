@@ -7,7 +7,7 @@ module CRData
       t.insert(Map::KVP(String, String).new("test1", "v:1"))
       t.insert(Map::KVP(String, String).new("test2", "v:2"))
       t.insert(Map::KVP(String, String).new("test0", "v:0"))
-      (3..9).each { |x| t.insert(Map::KVP(String, String).new("test#{x}", "v:#{x}")); puts "DUMP: [#{t.dump}]" }
+      (3..9).each { |x| t.insert(Map::KVP(String, String).new("test#{x}", "v:#{x}")); puts "DUMP: [#{t.dump_in_order}]" }
       puts "tDUMP: [#{t.dump_in_order}]"
       t.display
       puts "After updating tree key 'test8'"

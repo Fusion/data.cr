@@ -32,7 +32,7 @@ class AVLTree(T)
   end
 
   # Create a tree with pre populated nodes
-  def initialize(root_node : T)
+  def initialize(root_node : Tree::Node(T)?)
     @tree = Tree(T).new
     @tree.root_node = root_node
   end
@@ -188,12 +188,12 @@ class AVLTree(T)
     node.not_nil!.height
   end
 
-  def copy_path(data : T)
+  def copy_path(data : T) : {Tree::Node(T)?, Tree::Node(T)?}
     node = @tree.root_node
     copy_root_node = Tree::Node(T).new(node.not_nil!) if node != nil
     cur_node = copy_root_node
     loop do
-      return [copy_root_node, nil] if node == nil
+      return {copy_root_node, nil} if node == nil
 
       case data <=> node.not_nil!.data
       when 1
@@ -205,15 +205,14 @@ class AVLTree(T)
         node = node.not_nil!.left
         cur_node = cur_node.not_nil!.left
       else
-        puts "Found/Returning: #{copy_root_node}"
-        return [copy_root_node, node]
+        return {copy_root_node, node}
       end
     end
   end
 
   # Tree
   # Balanced Search Tree: compare
-  def search(data : T)
+  def search(data : T) : Tree::Node(T)?
     node = @tree.root_node
     loop do
       return nil if node == nil || node.not_nil!.data == nil
