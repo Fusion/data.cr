@@ -19,6 +19,14 @@ describe CrData do
       end
       t.dump_in_order.should eq " A B C E F G H"
     end
+
+    it "can enumerate elements" do
+      t_s_a = [] of String
+      t.each do |item|
+        t_s_a << item
+      end
+      t_s_a.join(",").should eq "A,B,C,E,F,G,H"
+    end    
   end
 
   describe "Map" do
@@ -45,6 +53,17 @@ describe CrData do
     my = my.set("test5", "5!")
     it "can delete keys and recreate them" do
       my.dump.should eq " v:0 v:2 ok3 v:4 5! ok6 v:7 ok"
+    end
+
+    it "can enumerate elements in key order" do
+      keys_a = [] of String
+      values_a = [] of String?
+      my.each do |entry|
+        keys_a <<  entry.key
+        values_a << entry.value
+      end
+      keys_a.join(",").should eq "test0,test2,test3,test4,test5,test6,test7,test8"
+      values_a.join(",").should eq "v:0,v:2,ok3,v:4,5!,ok6,v:7,ok"
     end
   end
 

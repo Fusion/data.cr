@@ -16,8 +16,8 @@ class AVLTree(T)
   delegate to_s, to: @tree
 
   # When capturing blocks are involved, the delegate macro cannot work...
-  def each
-    @tree.each { |x| yield x }
+  def each(&block : T ->)
+    @tree.each(&block)
   end
 
   def initialize

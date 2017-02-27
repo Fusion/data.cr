@@ -64,6 +64,16 @@ class Tree(T)
       @color = template.color
       @height = template.height
     end
+
+    def each(&block : N ->)
+      if l = @left
+        l.each(&block)
+      end
+      yield @data
+      if r = @right
+        r.each(&block)
+      end
+    end
   end
 
   property root_node
@@ -93,22 +103,9 @@ class Tree(T)
     dump_in_order_ @root_node
   end
 
-  # Yield cannot recurse! Damn...need to unroll the whole business
-  # Not too happy here as this means no streaming...
-  def each
-    # Let's maintain a stack of traversed nodes...
-    ll = LinkedList(Node(T)).new
-    cur_node = @root_node
-    loop do
-      if cur_node == nil # Found leftmost node -- go back up
-        break if ll.empty?
-        cur_node = ll.in_place_pop
-        yield cur_node.not_nil!.data
-        cur_node = cur_node.not_nil!.right
-      else # Keep digging
-        ll.add cur_node
-        cur_node = cur_node.not_nil!.left
-      end
+  def each(&block : T ->)
+    if @root_node != nil
+      @root_node.not_nil!.each(&block)
     end
   end
 

@@ -1,4 +1,6 @@
 class Map(K, V)
+  include Enumerable(K)
+
   class KVP(K, V)
     include Comparable(KVP)
 
@@ -29,6 +31,10 @@ class Map(K, V)
     @tree = AVLTree(KVP(K, V)).new
   end
 
+  def each(&block : KVP(K, V) ->)
+    @tree.each(&block)
+  end
+
   def dump
     @tree.dump_in_order
   end
@@ -53,3 +59,5 @@ class Map(K, V)
     Map(K, V).new(new_tree)
   end
 end
+
+alias SortedMap = Map
