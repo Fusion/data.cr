@@ -68,11 +68,11 @@ describe CrData do
   end
 
   describe "Map key-values directly in Tree" do
-    t = AVLTree(Map::KVP(String, String)).new
-    t.insert(Map::KVP(String, String).new("test1", "v:1"))
-    t.insert(Map::KVP(String, String).new("test2", "v:2"))
-    t.insert(Map::KVP(String, String).new("test0", "v:0"))
-    (3..9).each { |x| t.insert(Map::KVP(String, String).new("test#{x}", "v:#{x}")); }    
+    t = AVLTree(KVP(String, String)).new
+    t.insert(KVP(String, String).new("test1", "v:1"))
+    t.insert(KVP(String, String).new("test2", "v:2"))
+    t.insert(KVP(String, String).new("test0", "v:0"))
+    (3..9).each { |x| t.insert(KVP(String, String).new("test#{x}", "v:#{x}")); }    
     it "can store key values in trees" do
       t.dump_in_order.should eq " v:0 v:1 v:2 v:3 v:4 v:5 v:6 v:7 v:8 v:9"
     end

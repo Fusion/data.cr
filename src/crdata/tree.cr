@@ -18,20 +18,10 @@ class Tree(T)
     @color : Color
 
     def to_s(io)
-      io << " [#{@data} (height: #{@height})"
-      if @left != nil
-        io << " / left: #{@left.not_nil!.data}"
-      end
-      if @right != nil
-        io << " / right: #{@right.not_nil!.data}"
-      end
+      io << " [#{@data} (height: #{@height})"      
+      io << " / left: #{@l.data}" if l = @left
+      io << " / right: #{r.data}" if r = @right
       io << "]"
-      if @left != nil
-        puts @left
-      end
-      if @right != nil
-        puts @right
-      end
     end
 
     def initialize
@@ -47,7 +37,6 @@ class Tree(T)
     end
 
     def initialize(cloned : Node(N))
-      # TODO clone data
       @data = cloned.data
       @left = cloned.left
       @right = cloned.right
@@ -66,13 +55,9 @@ class Tree(T)
     end
 
     def each(&block : N ->)
-      if l = @left
-        l.each(&block)
-      end
+      @left.try &.each(&block)
       yield @data
-      if r = @right
-        r.each(&block)
-      end
+      @right.try &.each(&block)
     end
   end
 
@@ -89,12 +74,12 @@ class Tree(T)
 
   def dump_in_order_(node)
     acc! = ""
-    if node != nil
-      acc = dump_in_order_ node.not_nil!.left
+    if node_nn = node
+      acc = dump_in_order_ node_nn.left
       acc = "" if acc == nil
       acc! = acc.not_nil!
       acc! += " #{node.not_nil!.data}"
-      acc! += dump_in_order_ node.not_nil!.right
+      acc! += dump_in_order_ node_nn.right
     end
     acc!
   end
@@ -103,11 +88,27 @@ class Tree(T)
     dump_in_order_ @root_node
   end
 
-  def each(&block : T ->)
-    if @root_node != nil
-      @root_node.not_nil!.each(&block)
+  # So, recursing and yielding are frennemies.
+  # The workaround is to keep track of where we are in the tree
+  # at any point in time. This list of breadcrumbs is built lazily
+  # so 'sall good.
+  def each
+    # Let's maintain a stack of traversed nodes...
+    ll = LinkedList(Node(T)).new
+    cur_node = @root_node
+    loop do
+      if cur_node == nil # Found leftmost node -- go back up
+        break if ll.empty?
+        cur_node = ll.in_place_pop
+        yield cur_node.not_nil!.data
+        cur_node = cur_node.not_nil!.right
+      else # Keep digging
+        ll.add cur_node
+        cur_node = cur_node.not_nil!.left
+      end
     end
   end
+
 
   def initialize
     @root_node = nil

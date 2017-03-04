@@ -16,8 +16,10 @@ class AVLTree(T)
   delegate to_s, to: @tree
 
   # When capturing blocks are involved, the delegate macro cannot work...
-  def each(&block : T ->)
-    @tree.each(&block)
+  def each
+    @tree.each do |x|
+      yield x
+    end
   end
 
   def initialize
@@ -53,9 +55,7 @@ class AVLTree(T)
   end
 
   def insert_(new_node : Tree::Node(T), cur_node : Tree::Node(T)?)
-    if cur_node == nil
-      return new_node
-    end
+    return new_node if cur_node == nil
 
     cur_node! = cur_node.not_nil!
     case new_node.data <=> cur_node!.data
@@ -100,9 +100,7 @@ class AVLTree(T)
   end
 
   def delete_(del_node : Tree::Node(T), cur_node : Tree::Node(T)?)
-    if cur_node == nil
-      return cur_node
-    end
+    return cur_node if cur_node == nil
 
     cur_node! = cur_node.not_nil!
     case del_node.data <=> cur_node!.data
